@@ -2,6 +2,9 @@ backend:
   name: git-gateway
   branch: main
 
+site_url: https://soft-peony-eb4c3c.netlify.app
+display_url: https://soft-peony-eb4c3c.netlify.app
+
 media_folder: "static/uploads"
 public_folder: "/uploads"
 
