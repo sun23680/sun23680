@@ -25,9 +25,15 @@
       border-bottom: 2px solid var(--primary-color);
     }
     header img {
-      max-width: 320px;
-      height: auto;
-    }
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 600px) {
+  header img {
+    max-width: 180px;
+  }
+}
     nav {
       background-color: var(--primary-color);
       display: flex;
@@ -68,10 +74,13 @@
 </head>
 <body>
   <header>
+  <a href="index.html">
     <img src="거리로 로고 진.svg" alt="거리로 로고" />
-  </header>
+  </a>
+</header>
 
-  <nav>
+<nav>
+  <div style="flex: 1; display: flex; justify-content: center; flex-wrap: wrap;">
     <a href="#news">뉴스</a>
     <a href="#features">기획특집</a>
     <a href="#video">영상</a>
@@ -79,7 +88,12 @@
     <a href="#opinion">사설·칼럼</a>
     <a href="#about">언론사 소개</a>
     <a href="#support">후원·구독</a>
-  </nav>
+  </div>
+  <div style="margin-right: 1rem;">
+    <a href="#login" style="color:white; margin-left:1rem;">로그인</a> /
+    <a href="#logout" style="color:white;">로그아웃</a>
+  </div>
+</nav>
 
   <main>
     <section id="news">
