@@ -30,7 +30,7 @@
       width: 100%;
       height: auto;
     }
-    header .login-icon {
+    header .menu-icon {
       position: absolute;
       top: 1rem;
       left: 1rem;
@@ -39,21 +39,18 @@
       cursor: pointer;
     }
     nav {
-  background-color: var(--primary-color);
-  padding: 0.75rem 1rem;
-  overflow-x: auto;
-  white-space: nowrap;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-}
-
-@media (max-width: 768px) {
-  nav {
-    justify-content: flex-start;
-  }
-}
-
+      background-color: var(--primary-color);
+      overflow-x: auto;
+      white-space: nowrap;
+      display: flex;
+      padding: 0.75rem 1rem;
+      justify-content: center;
+    }
+    @media (max-width: 768px) {
+      nav {
+        justify-content: flex-start;
+      }
+    }
     nav a {
       color: white;
       margin: 0 1rem;
@@ -90,19 +87,58 @@
         max-width: 180px;
       }
     }
+
+    .side-menu {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      background-color: #fff;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      border-right: 1px solid #ccc;
+    }
+    .side-menu a {
+      padding: 8px 32px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      display: block;
+      transition: 0.3s;
+    }
+    .side-menu a:hover {
+      background-color: #f1f1f1;
+    }
+    .side-menu .closebtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 30px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <header>
-    <!-- 로그인 아이콘 -->
-    <a href="#login">
-      <img src="363639-200.svg" alt="로그인 아이콘" class="login-icon" />
-    </a>
-    <!-- 메인 로고 -->
+    <img src="짝대기 세개.svg" alt="메뉴 아이콘" class="menu-icon" onclick="openMenu()" />
     <a href="index.html">
       <img src="거리로 로고 진.svg" alt="거리로 로고" class="logo" />
     </a>
   </header>
+
+  <div id="sideMenu" class="side-menu">
+    <span class="closebtn" onclick="closeMenu()">&times;</span>
+    <a href="#news">뉴스</a>
+    <a href="#features">기획특집</a>
+    <a href="#video">영상</a>
+    <a href="#voice">거리의 목소리</a>
+    <a href="#opinion">사설·칼럼</a>
+    <a href="#about">언론사 소개</a>
+    <a href="#support">후원·구독</a>
+  </div>
 
   <nav>
     <a href="#news">뉴스</a>
@@ -154,5 +190,14 @@
   <footer>
     <p>&copy; 2025 거리로. 모든 권리 보유.</p>
   </footer>
+
+  <script>
+    function openMenu() {
+      document.getElementById("sideMenu").style.width = "250px";
+    }
+    function closeMenu() {
+      document.getElementById("sideMenu").style.width = "0";
+    }
+  </script>
 </body>
 </html>
