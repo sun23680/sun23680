@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: sun23680/sun23680
+  name: git-gateway
   branch: main
 
 media_folder: "uploads"
