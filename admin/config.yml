@@ -1,11 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: sun23680/sun23680
   branch: main
 
-site_url: https://roadro.netlify.app
-display_url: https://roadro.netlify.app
-
-media_folder: "static/uploads"
+media_folder: "uploads"
 public_folder: "/uploads"
 
 collections:
