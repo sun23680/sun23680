@@ -1,11 +1,39 @@
-<!DOCTYPE html>
-<html lang="ko">
+<!doctype html>
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Netlify CMS</title>
+    <meta charset="utf-8" />
+    <title>거리로 관리자</title>
+    <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
   </head>
   <body>
-    <script src="https://unpkg.com/netlify-cms@2.10.192/dist/netlify-cms.js"></script>
+    <script>
+      window.addEventListener('DOMContentLoaded', function () {
+        CMS.init({
+          config: {
+            backend: {
+              name: 'github',
+              repo: 'sun23680/roadro',
+              branch: 'main',
+            },
+            media_folder: 'uploads',
+            public_folder: '/uploads',
+            collections: [
+              {
+                name: 'news',
+                label: '뉴스',
+                folder: 'content/news',
+                create: true,
+                slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
+                fields: [
+                  { label: '제목', name: 'title', widget: 'string' },
+                  { label: '날짜', name: 'date', widget: 'datetime' },
+                  { label: '본문', name: 'body', widget: 'markdown' },
+                ],
+              },
+            ],
+          },
+        });
+      });
+    </script>
   </body>
 </html>
-
