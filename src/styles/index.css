@@ -9,10 +9,15 @@
   --card-border: #e0e0e0;
   --hover-shadow: rgba(0, 0, 0, 0.1);
   --footer-bg: #f7f7f7;
+
+  /* 컨테이너 최대 너비 */
   --container-max-width: 1200px;
 
-  /* 헤더 높이 변수로 지정 */
-  --header-height: 120px; /* 최상단바(헤더)의 고정 높이 */
+  /* 헤더 높이 (px 단위) */
+  --header-height: 120px;
+
+  /* 서브바(검색바) 높이 (px 단위) */
+  --subheader-height: 56px;
 }
 * {
   margin: 0;
@@ -40,11 +45,11 @@ body {
 /* -------------------------------------------- */
 /* 3) 최상단바 (흰색 배경, 고정) */
 .site-header {
-  position: fixed;      /* sticky → fixed 로 변경 */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--header-height); /* 고정 높이 지정 */
+  height: var(--header-height);
   background-color: #fff;
   border-bottom: 1px solid #e5e5e5;
   z-index: 1000;
@@ -53,7 +58,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 100%; /* container도 헤더 높이에 맞춤 */
+  height: 100%;
 }
 
 /* 햄버거 & 로그인 버튼 */
@@ -76,35 +81,78 @@ body {
   height: 32px;
 }
 
-/* 로고 중앙 정렬 */
+/* 로고 가운데 정렬 */
 .header-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* 로고 크기 및 위아래 여백 증가 */
-/* 기본 로고 높이 + padding */
+/* 로고 크기 및 위/아래 여백 */
+/* PC 기준 기본값 */
 .logo-img.large-logo {
-  height: 100px;    /* 기본 높이를 100px 로 늘림 */
-  margin-top: 10px; /* 위쪽 여백 추가 */
-  margin-bottom: 10px; /* 아래쪽 여백 추가 */
+  height: 100px;      /* 로고 높이를 크게 설정 */
+  margin-top: 10px;   /* 위쪽 여백 */
+  margin-bottom: 10px;/* 아래쪽 여백 */
   width: auto;
 }
 
 /* -------------------------------------------- */
-/* 4) 서브바 (초록색 배경) */
-/* 서브바 위치를 헤더 바로 아래에 고정하지 않는 대신, 
-   단순히 헤더 높이만큼 내용을 아래로 밀어주면 됩니다. */
+/* 4) 서브바 (초록색 배경, 고정) */
 .sub-header {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
   width: 100%;
+  height: var(--subheader-height);
   background-color: var(--primary-green);
+  z-index: 999;
 }
 .sub-header .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 12px 0;
+  height: 100%;
+}
+
+.search-form {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.search-select {
+  flex: 0 0 100px;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input {
+  flex: 1 1 auto;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-button {
+  flex: 0 0 auto;
+  background-color: #fff;
+  color: var(--text-dark);
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.search-button:hover {
+  background-color: #f2f2f2;
 }
 
 /* -------------------------------------------- */
@@ -115,7 +163,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0); /* 기본은 투명 */
+  background: rgba(0, 0, 0, 0);
   opacity: 0;
   visibility: hidden;
   transition: background 0.3s ease, opacity 0.3s ease;
@@ -130,7 +178,6 @@ body {
   visibility: visible;
 }
 
-/* 사이드바 자체 */
 .sidebar {
   width: 260px;
   background-color: #fff;
@@ -174,16 +221,14 @@ body {
 
 /* -------------------------------------------- */
 /* 6) 본문 콘텐츠 */
-/* 헤더 높이(120px) + 서브바 높이(약 56px) 만큼 상단 마진을 줘서
-   콘텐츠가 헤더/서브바 아래에서 시작하도록 밀어줍니다. */
+/* 헤더 높이 + 서브바 높이 만큼 본문을 아래로 밀기 */
 .main-content {
   width: 100%;
-  margin-top: calc(var(--header-height) + 56px); /* 56px은 대략 서브바 높이 */
+  margin-top: calc(var(--header-height) + var(--subheader-height));
   padding-bottom: 40px;
   background-color: #fff;
 }
 
-/* 카테고리 섹션 */
 .category-section {
   margin-bottom: 60px;
 }
@@ -196,7 +241,6 @@ body {
   padding-left: 12px;
 }
 
-/* 뉴스 카드 Fade-InUp 애니메이션 */
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -279,6 +323,8 @@ body {
 @media screen and (min-width: 1024px) {
   .logo-img.large-logo {
     height: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 
