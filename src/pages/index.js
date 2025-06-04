@@ -1,3 +1,4 @@
+// src/pages/index.js
 import React, { useState } from "react"
 import { graphql, Link } from "gatsby"
 import Layout from "../components/Layout"
@@ -37,7 +38,7 @@ export default function Home({ data }) {
 
   return (
     <Layout>
-      <header>
+      <header className="site-header">
         <img
           src="/static/uploads/hamburger.svg"
           alt="menu"
@@ -88,11 +89,11 @@ export default function Home({ data }) {
 
       <main>
         {categories.map(category => (
-          <section id={category} key={category}>
+          <section id={category} key={category} className="category-section">
             <h2>{category}</h2>
             <div className="news-list" data-category={category}>
               {(categorized[category] || []).slice(0, 3).map(post => (
-                <div key={post.id}>
+                <div key={post.id} className="news-item">
                   <p className="post-date">{post.frontmatter.date}</p>
                   <Link className="post-title" to={`/news${post.fields.slug}`}>{post.frontmatter.title}</Link>
                   <p>{post.excerpt}</p>
