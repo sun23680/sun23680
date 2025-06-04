@@ -37,7 +37,7 @@
       height: 28px;
       position: absolute;
       top: 1rem;
-      right: 1rem;
+      left: 1rem;
       cursor: pointer;
     }
     .search-bar-wrapper {
@@ -94,12 +94,12 @@
       position: fixed;
       z-index: 1000;
       top: 0;
-      right: 0;
+      left: 0;
       background-color: #fff;
       overflow-x: hidden;
       transition: 0.3s;
       padding-top: 60px;
-      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc;
     }
     .side-menu a {
       padding: 8px 32px;
@@ -115,7 +115,7 @@
     .side-menu .closebtn {
       position: absolute;
       top: 10px;
-      left: 20px;
+      right: 20px;
       font-size: 30px;
       cursor: pointer;
     }
@@ -157,7 +157,7 @@
         max-width: 160px;
       }
       .menu-icon {
-        right: 1rem;
+        left: 1rem;
         top: 0.75rem;
       }
       .search-bar-wrapper {
@@ -174,8 +174,10 @@
 </head>
 <body>
   <header>
-    <img src="/static/uploads/logo.svg" alt="logo" class="logo" />
     <img src="/static/uploads/hamburger.svg" alt="menu" class="menu-icon" onclick="openMenu()" />
+    <a href="index.html">
+      <img src="/static/uploads/logo.svg" alt="logo" class="logo" />
+    </a>
   </header>
 
   <div class="search-bar-wrapper">
@@ -221,7 +223,26 @@
   </div>
 
   <main>
-    
+    <section id="politics">
+      <h2>정치</h2>
+      <div class="news-list" data-category="정치">불러오는 중...</div>
+    </section>
+    <section id="society">
+      <h2>사회</h2>
+      <div class="news-list" data-category="사회">불러오는 중...</div>
+    </section>
+    <section id="life">
+      <h2>민생</h2>
+      <div class="news-list" data-category="민생">불러오는 중...</div>
+    </section>
+    <section id="culture">
+      <h2>문화</h2>
+      <div class="news-list" data-category="문화">불러오는 중...</div>
+    </section>
+    <section id="opinion">
+      <h2>칼럼</h2>
+      <div class="news-list" data-category="칼럼">불러오는 중...</div>
+    </section>
   </main>
 
   <script>
@@ -234,6 +255,4 @@
   </script>
 </body>
 </html>
-  </script>
-</body>
-</html>
+
