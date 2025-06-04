@@ -28,7 +28,9 @@ const IndexPage = ({ data }) => {
             <article key={post.id}>
               <h3>{post.frontmatter.title}</h3>
               <small>{post.frontmatter.date}</small>
-              <div dangerouslySetInnerHTML={{ __html: post.html }} />
+              {post.html && (
+                <div dangerouslySetInnerHTML={{ __html: post.html }} />
+              )}
             </article>
           ))}
         </section>
