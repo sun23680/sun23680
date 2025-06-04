@@ -24,11 +24,51 @@
       padding: 1rem 2rem;
       text-align: center;
       border-bottom: 2px solid var(--primary-color);
+      position: relative;
     }
     header .logo {
       max-width: 280px;
       width: 100%;
       height: auto;
+    }
+    .side-menu {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      background-color: #fff;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      border-right: 1px solid #ccc;
+    }
+    .side-menu a {
+      padding: 8px 32px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      display: block;
+      transition: 0.3s;
+    }
+    .side-menu a:hover {
+      background-color: #f1f1f1;
+    }
+    .side-menu .closebtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+    .menu-icon {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
     }
     nav {
       background-color: var(--primary-color);
@@ -76,10 +116,22 @@
 </head>
 <body>
   <header>
+    <img src="/static/uploads/hamburger.svg" alt="menu" class="menu-icon" onclick="openMenu()" />
     <a href="index.html">
       <img src="/static/uploads/logo.svg" alt="logo" class="logo" />
     </a>
   </header>
+
+  <div id="sideMenu" class="side-menu">
+    <span class="closebtn" onclick="closeMenu()">&times;</span>
+    <a href="#politics">정치</a>
+    <a href="#society">사회</a>
+    <a href="#life">민생</a>
+    <a href="#culture">문화</a>
+    <a href="#opinion">칼럼</a>
+    <a href="#notice">공지사항</a>
+    <a href="#report">제보하기</a>
+  </div>
 
   <nav>
     <a href="#politics">정치</a>
@@ -108,46 +160,70 @@
       <h2>문화</h2>
       <div class="news-list" data-category="문화">불러오는 중...</div>
     </section>
+
+    <section id="opinion">
+      <h2>칼럼</h2>
+      <div class="news-list" data-category="칼럼">불러오는 중...</div>
+    </section>
+
+    <section id="notice">
+      <h2>공지사항</h2>
+      <div class="news-list" data-category="공지사항">불러오는 중...</div>
+    </section>
+
+    <section id="report">
+      <h2>제보하기</h2>
+      <div class="news-list" data-category="제보하기">불러오는 중...</div>
+    </section>
   </main>
 
   <script>
-    const posts = [
-      "/content/news/2025-06-04-example.md" // 여기에 CMS에서 작성된 글 경로들 추가
-    ];
+    function openMenu() {
+      document.getElementById("sideMenu").style.width = "250px";
+    }
+    function closeMenu() {
+      document.getElementById("sideMenu").style.width = "0";
+    }
 
-    posts.forEach(async (url) => {
-      try {
-        const res = await fetch(url);
-        const text = await res.text();
-        const metaMatch = text.match(/---([\\s\\S]*?)---/);
-        const content = text.replace(/---([\\s\\S]*?)---/, "").trim();
-        const metadata = {};
+    async function loadPosts() {
+      const res = await fetch("/content/news/index.json");
+      const postList = await res.json();
 
-        if (metaMatch) {
-          metaMatch[1].trim().split("\\n").forEach(line => {
-            const [key, ...rest] = line.split(":");
-            metadata[key.trim()] = rest.join(":").trim();
-          });
+      for (const url of postList) {
+        try {
+          const res = await fetch(url);
+          const text = await res.text();
+          const metaMatch = text.match(/---([\\s\\S]*?)---/);
+          const content = text.replace(/---([\\s\\S]*?)---/, "").trim();
+          const metadata = {};
+
+          if (metaMatch) {
+            metaMatch[1].trim().split("\\n").forEach(line => {
+              const [key, ...rest] = line.split(":");
+              metadata[key.trim()] = rest.join(":").trim();
+            });
+          }
+
+          const html = marked.parse(content);
+          const article = document.createElement("article");
+          article.innerHTML = `
+            <div class="post-title">${metadata.title || "제목 없음"}</div>
+            <div class="post-date">${metadata.date || ""}</div>
+            <div class="post-body">${html}</div>
+          `;
+
+          const target = document.querySelector(`[data-category="\${metadata.category}"]`);
+          if (target) {
+            if (target.innerHTML.includes("불러오는 중")) target.innerHTML = "";
+            target.appendChild(article);
+          }
+        } catch (e) {
+          console.error("불러오기 실패:", url, e);
         }
-
-        const html = marked.parse(content);
-        const article = document.createElement("article");
-        article.innerHTML = `
-          <div class="post-title">${metadata.title || "제목 없음"}</div>
-          <div class="post-date">${metadata.date || ""}</div>
-          <div class="post-body">${html}</div>
-        `;
-
-        const target = document.querySelector(`[data-category="\${metadata.category}"]`);
-        if (target) {
-          if (target.innerHTML.includes("불러오는 중")) target.innerHTML = "";
-          target.appendChild(article);
-        }
-      } catch (e) {
-        console.error("불러오기 실패:", url, e);
       }
-    });
+    }
+
+    loadPosts();
   </script>
 </body>
 </html>
-
