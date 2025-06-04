@@ -10,6 +10,9 @@
   --hover-shadow: rgba(0, 0, 0, 0.1);
   --footer-bg: #f7f7f7;
   --container-max-width: 1200px;
+
+  /* 헤더 높이 변수로 지정 */
+  --header-height: 120px; /* 최상단바(헤더)의 고정 높이 */
 }
 * {
   margin: 0;
@@ -35,20 +38,22 @@ body {
 }
 
 /* -------------------------------------------- */
-/* 3) 최상단바 (흰색 배경) */
+/* 3) 최상단바 (흰색 배경, 고정) */
 .site-header {
+  position: fixed;      /* sticky → fixed 로 변경 */
+  top: 0;
+  left: 0;
   width: 100%;
+  height: var(--header-height); /* 고정 높이 지정 */
   background-color: #fff;
   border-bottom: 1px solid #e5e5e5;
-  position: sticky;
-  top: 0;
   z-index: 1000;
 }
 .site-header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 90px; /* 로고 위아래 여백 충분히 확보 */
+  height: 100%; /* container도 헤더 높이에 맞춤 */
 }
 
 /* 햄버거 & 로그인 버튼 */
@@ -78,16 +83,19 @@ body {
   align-items: center;
 }
 
-/* 로고 크기(기본) */
+/* 로고 크기 및 위아래 여백 증가 */
+/* 기본 로고 높이 + padding */
 .logo-img.large-logo {
-  height: 80px;
+  height: 100px;    /* 기본 높이를 100px 로 늘림 */
+  margin-top: 10px; /* 위쪽 여백 추가 */
+  margin-bottom: 10px; /* 아래쪽 여백 추가 */
   width: auto;
-  padding-top: 8px;
-  padding-bottom: 8px;
 }
 
 /* -------------------------------------------- */
 /* 4) 서브바 (초록색 배경) */
+/* 서브바 위치를 헤더 바로 아래에 고정하지 않는 대신, 
+   단순히 헤더 높이만큼 내용을 아래로 밀어주면 됩니다. */
 .sub-header {
   width: 100%;
   background-color: var(--primary-green);
@@ -97,46 +105,6 @@ body {
   justify-content: center;
   align-items: center;
   padding: 12px 0;
-}
-
-.search-form {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-  max-width: 900px;
-}
-
-.search-select {
-  flex: 0 0 100px;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 12px;
-  font-size: 14px;
-  outline: none;
-}
-
-.search-input {
-  flex: 1 1 auto;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 12px;
-  font-size: 14px;
-  outline: none;
-}
-
-.search-button {
-  flex: 0 0 auto;
-  background-color: #fff;
-  color: var(--text-dark);
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-.search-button:hover {
-  background-color: #f2f2f2;
 }
 
 /* -------------------------------------------- */
@@ -151,7 +119,6 @@ body {
   opacity: 0;
   visibility: hidden;
   transition: background 0.3s ease, opacity 0.3s ease;
-
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
@@ -169,15 +136,12 @@ body {
   background-color: #fff;
   padding: 20px;
   position: relative;
-
-  /* 기본 상태: 화면 왼쪽 바깥으로 배치 */
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   box-shadow: 2px 0 8px var(--hover-shadow);
   overflow-y: auto;
 }
 .sidebar.open {
-  /* open 클래스가 붙으면 0으로 이동하여 슬라이드 인(들어옴) */
   transform: translateX(0);
 }
 
@@ -209,12 +173,17 @@ body {
 }
 
 /* -------------------------------------------- */
-/* 6) 본문 콘텐츠 & 뉴스 카드 애니메이션 */
+/* 6) 본문 콘텐츠 */
+/* 헤더 높이(120px) + 서브바 높이(약 56px) 만큼 상단 마진을 줘서
+   콘텐츠가 헤더/서브바 아래에서 시작하도록 밀어줍니다. */
 .main-content {
   width: 100%;
-  padding-top: 40px;
+  margin-top: calc(var(--header-height) + 56px); /* 56px은 대략 서브바 높이 */
   padding-bottom: 40px;
+  background-color: #fff;
 }
+
+/* 카테고리 섹션 */
 .category-section {
   margin-bottom: 60px;
 }
@@ -227,6 +196,7 @@ body {
   padding-left: 12px;
 }
 
+/* 뉴스 카드 Fade-InUp 애니메이션 */
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -239,12 +209,8 @@ body {
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
-
-  /* 초기 상태: 투명 + 아래로 약간 이동 */
   opacity: 0;
   transform: translateY(10px);
-
-  /* 애니메이션: Fade-In + 슬라이드업 */
   animation: fadeInUp 0.4s forwards;
 }
 
@@ -281,7 +247,6 @@ body {
   line-height: 1.5;
 }
 
-/* 카테고리에 글이 없을 때 */
 .no-posts {
   grid-column: 1 / -1;
   text-align: center;
@@ -321,16 +286,20 @@ body {
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .logo-img.large-logo {
     height: 80px;
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
 }
 
 /* 모바일 (767px 이하) */
 @media screen and (max-width: 767px) {
   .logo-img.large-logo {
-    height: 50px;
+    height: 60px;
+    margin-top: 6px;
+    margin-bottom: 6px;
   }
   .site-header .container {
-    height: 70px;
+    height: var(--header-height);
   }
   .search-form {
     flex-direction: column;
