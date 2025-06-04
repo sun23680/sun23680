@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>거리로</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     :root {
       --primary-color: #1eb477;
@@ -23,20 +24,11 @@
       padding: 1rem 2rem;
       text-align: center;
       border-bottom: 2px solid var(--primary-color);
-      position: relative;
     }
     header .logo {
       max-width: 280px;
       width: 100%;
       height: auto;
-    }
-    header .menu-icon {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
     }
     nav {
       background-color: var(--primary-color);
@@ -46,17 +38,11 @@
       padding: 0.75rem 1rem;
       justify-content: center;
     }
-    @media (max-width: 768px) {
-      nav {
-        justify-content: flex-start;
-      }
-    }
     nav a {
       color: white;
       margin: 0 1rem;
       text-decoration: none;
       font-weight: 600;
-      display: inline-block;
     }
     nav a:hover {
       text-decoration: underline;
@@ -72,132 +58,96 @@
     h2 {
       border-left: 6px solid var(--accent-color);
       padding-left: 0.75rem;
-      margin-bottom: 1rem;
       color: var(--accent-color);
+      margin-bottom: 1rem;
     }
-    footer {
-      background-color: #e9f5f1;
-      color: #555;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
+    .post-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
     }
-    @media (max-width: 600px) {
-      header .logo {
-        max-width: 180px;
-      }
-    }
-
-    .side-menu {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 1000;
-      top: 0;
-      left: 0;
-      background-color: #fff;
-      overflow-x: hidden;
-      transition: 0.3s;
-      padding-top: 60px;
-      border-right: 1px solid #ccc;
-    }
-    .side-menu a {
-      padding: 8px 32px;
-      text-decoration: none;
-      font-size: 18px;
-      color: #111;
-      display: block;
-      transition: 0.3s;
-    }
-    .side-menu a:hover {
-      background-color: #f1f1f1;
-    }
-    .side-menu .closebtn {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 30px;
-      cursor: pointer;
+    .post-date {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="/static/uploads/hamburger.svg" alt="menu" class="menu-icon" onclick="openMenu()" />
     <a href="index.html">
       <img src="/static/uploads/logo.svg" alt="logo" class="logo" />
     </a>
   </header>
 
-  <div id="sideMenu" class="side-menu">
-    <span class="closebtn" onclick="closeMenu()">&times;</span>
-    <a href="#news">뉴스</a>
-    <a href="#features">기획특집</a>
-    <a href="#video">영상</a>
-    <a href="#voice">거리의 목소리</a>
-    <a href="#opinion">사설·칼럼</a>
-    <a href="#about">언론사 소개</a>
-    <a href="#support">후원·구독</a>
-  </div>
-
   <nav>
-    <a href="#news">뉴스</a>
-    <a href="#features">기획특집</a>
-    <a href="#video">영상</a>
-    <a href="#voice">거리의 목소리</a>
-    <a href="#opinion">사설·칼럼</a>
-    <a href="#about">언론사 소개</a>
-    <a href="#support">후원·구독</a>
+    <a href="#politics">정치</a>
+    <a href="#society">사회</a>
+    <a href="#life">민생</a>
+    <a href="#culture">문화</a>
   </nav>
 
   <main>
-    <section id="news">
-      <h2>뉴스</h2>
-      <p>정치, 경제, 사회, 문화 등 다양한 뉴스를 전합니다.</p>
+    <section id="politics">
+      <h2>정치</h2>
+      <div class="news-list" data-category="정치">불러오는 중...</div>
     </section>
 
-    <section id="features">
-      <h2>기획특집</h2>
-      <p>심층 취재와 장기 기획 콘텐츠를 제공합니다.</p>
+    <section id="society">
+      <h2>사회</h2>
+      <div class="news-list" data-category="사회">불러오는 중...</div>
     </section>
 
-    <section id="video">
-      <h2>영상</h2>
-      <p>현장을 담은 인터뷰와 다큐멘터리를 제공합니다.</p>
+    <section id="life">
+      <h2>민생</h2>
+      <div class="news-list" data-category="민생">불러오는 중...</div>
     </section>
 
-    <section id="voice">
-      <h2>거리의 목소리</h2>
-      <p>시민 제보, 인터뷰, 칼럼을 모아 시민의 이야기를 전합니다.</p>
-    </section>
-
-    <section id="opinion">
-      <h2>사설·칼럼</h2>
-      <p>편집국과 외부 필자의 사설, 만평을 수록합니다.</p>
-    </section>
-
-    <section id="about">
-      <h2>언론사 소개</h2>
-      <p>거리로의 창간 취지, 윤리 강령, 주요 인물을 소개합니다.</p>
-    </section>
-
-    <section id="support">
-      <h2>후원·구독</h2>
-      <p>정기후원, 굿즈, 뉴스레터로 거리로를 응원해 주세요.</p>
+    <section id="culture">
+      <h2>문화</h2>
+      <div class="news-list" data-category="문화">불러오는 중...</div>
     </section>
   </main>
 
-  <footer>
-    <p>&copy; 2025 거리로. 모든 권리 보유.</p>
-  </footer>
-
   <script>
-    function openMenu() {
-      document.getElementById("sideMenu").style.width = "250px";
-    }
-    function closeMenu() {
-      document.getElementById("sideMenu").style.width = "0";
-    }
+    const posts = [
+      "/content/news/2025-06-04-example.md" // 여기에 CMS에서 작성된 글 경로들 추가
+    ];
+
+    posts.forEach(async (url) => {
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        const metaMatch = text.match(/---([\\s\\S]*?)---/);
+        const content = text.replace(/---([\\s\\S]*?)---/, "").trim();
+        const metadata = {};
+
+        if (metaMatch) {
+          metaMatch[1].trim().split("\\n").forEach(line => {
+            const [key, ...rest] = line.split(":");
+            metadata[key.trim()] = rest.join(":").trim();
+          });
+        }
+
+        const html = marked.parse(content);
+        const article = document.createElement("article");
+        article.innerHTML = `
+          <div class="post-title">${metadata.title || "제목 없음"}</div>
+          <div class="post-date">${metadata.date || ""}</div>
+          <div class="post-body">${html}</div>
+        `;
+
+        const target = document.querySelector(`[data-category="\${metadata.category}"]`);
+        if (target) {
+          if (target.innerHTML.includes("불러오는 중")) target.innerHTML = "";
+          target.appendChild(article);
+        }
+      } catch (e) {
+        console.error("불러오기 실패:", url, e);
+      }
+    });
   </script>
 </body>
 </html>
+
