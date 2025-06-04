@@ -2,11 +2,11 @@
 import React, { useState } from "react"
 import { graphql, Link } from "gatsby"
 import Layout from "../components/Layout"
-import "../styles/index.css" // 수정된 CSS를 함께 불러옵니다
+import "../styles/index.css"
 
 export const query = graphql`
   {
-    allMarkdownRemark(sort: {frontmatter: {date: DESC}}) {
+    allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
       nodes {
         id
         frontmatter {
@@ -25,7 +25,7 @@ export const query = graphql`
 
 export default function Home({ data }) {
   const posts = data.allMarkdownRemark.nodes
-  const categories = ["정치", "사회", "민생", "문화", "칼럼"]
+  const categories = ["정치", "사회", "민생", "문화", "칼럼", "공지사항"]
 
   // 카테고리별로 포스트 묶기
   const categorized = {}
@@ -35,75 +35,139 @@ export default function Home({ data }) {
     categorized[cat].push(post)
   })
 
-  // 현재 선택된 카테고리 (기본은 첫 번째)
-  const [activeCat, setActiveCat] = useState(categories[0])
-  // 검색창 열림 여부
-  const [searchOpen, setSearchOpen] = useState(false)
+  // 상태 관리
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [searchScope, setSearchScope] = useState("전체")
   const [searchQuery, setSearchQuery] = useState("")
+  const [activeCat, setActiveCat] = useState("정치")
 
-  // 검색 제출 핸들러 (예시: 실제로 필터링 로직 추가 가능)
   const handleSearch = e => {
     e.preventDefault()
-    // TODO: 검색 결과 페이지로 이동하거나, 상태 업데이트 후 목록 필터링
-    console.log("검색어:", searchQuery)
+    // TODO: 실제 검색 로직 or 검색 페이지로 이동
+    console.log("검색어:", searchQuery, " / 범위:", searchScope)
   }
 
   return (
     <Layout>
-      {/* ──────────────────────────────────────────────────────── */}
-      {/* 1) 헤더 */}
+      {/* ────────────────────────────────────────────── */}
+      {/* 1) 최상단바 (흰색 배경) */}
       <header className="site-header">
-        {/* 로고 */}
+        {/* 왼쪽: 햄버거 아이콘 */}
         <div className="header-left">
-          <Link to="/" className="logo-link">
-            <img src="/static/uploads/logo.svg" alt="logo" className="logo-img" />
+          <button
+            className="hamburger-btn"
+            onClick={() => setMenuOpen(true)}
+            aria-label="메뉴 열기"
+          >
+            <img
+              src="/static/uploads/hamburger.svg"
+              alt="메뉴"
+              className="hamburger-icon"
+            />
+          </button>
+        </div>
+
+        {/* 가운데: 로고 */}
+        <div className="header-center">
+          <Link to="/">
+            <img
+              src="/static/uploads/logo.svg"
+              alt="logo"
+              className="logo-img"
+            />
           </Link>
         </div>
 
-        {/* 상단 네비게이션(카테고리) + 검색 아이콘 */}
+        {/* 오른쪽: 로그인 버튼 */}
         <div className="header-right">
-          <nav className="top-nav">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                className={`nav-item ${activeCat === cat ? "active" : ""}`}
-                onClick={() => setActiveCat(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </nav>
-
-          {/* 검색 아이콘 + 입력 */}
-          <div className="search-container">
-            <button
-              className="search-icon-btn"
-              onClick={() => setSearchOpen(prev => !prev)}
-            >
-              🔍
-            </button>
-            {searchOpen && (
-              <form className="search-form-header" onSubmit={handleSearch}>
-                <input
-                  type="text"
-                  className="search-input-header"
-                  placeholder="검색어 입력"
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  autoFocus
-                />
-                <button type="submit" className="search-submit-btn">
-                  검색
-                </button>
-              </form>
-            )}
-          </div>
+          <Link to="/login" className="login-btn" aria-label="로그인">
+            <img
+              src="/static/uploads/login-icon.svg"
+              alt="로그인"
+              className="login-icon"
+            />
+          </Link>
         </div>
       </header>
-      {/* ──────────────────────────────────────────────────────── */}
 
-      {/* ──────────────────────────────────────────────────────── */}
-      {/* 2) 카테고리별 섹션: 헤더에서 클릭된 activeCat에 해당하는 섹션만 보여주기 */}
+      {/* ────────────────────────────────────────────── */}
+      {/* 2) 서브바 (초록색 배경) */}
+      <div className="sub-header">
+        <form className="search-form" onSubmit={handleSearch}>
+          <select
+            className="search-select"
+            value={searchScope}
+            onChange={e => setSearchScope(e.target.value)}
+          >
+            <option value="전체">전체</option>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="검색어를 입력하세요"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+          />
+          <button type="submit" className="search-button">
+            검색
+          </button>
+        </form>
+      </div>
+
+      {/* ────────────────────────────────────────────── */}
+      {/* 3) 사이드바 (메뉴열기 시) */}
+      {menuOpen && (
+        <div className="sidebar-overlay" onClick={() => setMenuOpen(false)}>
+          <aside
+            className="sidebar"
+            onClick={e => {
+              e.stopPropagation()
+            }}
+          >
+            <button
+              className="close-sidebar"
+              onClick={() => setMenuOpen(false)}
+              aria-label="메뉴 닫기"
+            >
+              &times;
+            </button>
+            <nav className="sidebar-nav">
+              <Link to="/" onClick={() => setMenuOpen(false)}>
+                홈
+              </Link>
+              <Link to="/category/정치" onClick={() => setMenuOpen(false)}>
+                정치
+              </Link>
+              <Link to="/category/사회" onClick={() => setMenuOpen(false)}>
+                사회
+              </Link>
+              <Link to="/category/민생" onClick={() => setMenuOpen(false)}>
+                민생
+              </Link>
+              <Link to="/category/문화" onClick={() => setMenuOpen(false)}>
+                문화
+              </Link>
+              <Link to="/category/칼럼" onClick={() => setMenuOpen(false)}>
+                칼럼
+              </Link>
+              <Link to="/category/공지사항" onClick={() => setMenuOpen(false)}>
+                공지사항
+              </Link>
+              <Link to="/support" onClick={() => setMenuOpen(false)}>
+                후원·구독하기
+              </Link>
+            </nav>
+          </aside>
+        </div>
+      )}
+
+      {/* ────────────────────────────────────────────── */}
+      {/* 4) 메인 콘텐츠: 카테고리별 뉴스 카드(예시: '정치' 카테고리) */}
       <main className="main-content">
         <section className="category-section">
           <h2 className="section-title">{activeCat}</h2>
@@ -112,7 +176,10 @@ export default function Home({ data }) {
               <article key={post.id} className="news-card">
                 <div className="card-content">
                   <p className="post-date">{post.frontmatter.date}</p>
-                  <Link to={`/news${post.fields.slug}`} className="post-title">
+                  <Link
+                    to={`/news${post.fields.slug}`}
+                    className="post-title"
+                  >
                     {post.frontmatter.title}
                   </Link>
                   <p className="post-excerpt">{post.excerpt}</p>
@@ -120,17 +187,29 @@ export default function Home({ data }) {
               </article>
             ))}
           </div>
-          {/* "더보기" 버튼 (필요 시 구현) */}
-          {categorized[activeCat] && categorized[activeCat].length > 6 && (
-            <div className="more-button-wrapper">
-              <Link to={`/category/${activeCat}`} className="more-button">
-                더보기 →
-              </Link>
-            </div>
-          )}
+          {categorized[activeCat] &&
+            categorized[activeCat].length > 6 && (
+              <div className="more-button-wrapper">
+                <Link
+                  to={`/category/${activeCat}`}
+                  className="more-button"
+                >
+                  더보기 →
+                </Link>
+              </div>
+            )}
         </section>
       </main>
-      {/* ──────────────────────────────────────────────────────── */}
+
+      {/* ────────────────────────────────────────────── */}
+      {/* 5) 하단바 (Footer) */}
+      <footer className="site-footer">
+        <div className="footer-content">
+          <p>© 2025 Your News Site. All Rights Reserved.</p>
+          <p>주소: 서울특별시 어딘가 · 연락처: 02-1234-5678</p>
+          <p>이용약관 · 개인정보처리방침 · 고객센터</p>
+        </div>
+      </footer>
     </Layout>
   )
 }
