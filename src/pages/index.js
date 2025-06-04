@@ -25,29 +25,33 @@ export const query = graphql`
 
 export default function Home({ data }) {
   const posts = data.allMarkdownRemark.nodes
-  const categories = ["정치", "사회", "민생", "문화", "칼럼", "공지사항"]
 
-  // 카테고리별로 포스트 묶기 (최신 → 오래된 순으로 이미 정렬됨)
+  // 1) CMS(markdown)에서 나오는 모든 카테고리 이름을 중복 제거하여 추출
+  const categories = Array.from(
+    new Set(posts.map(post => post.frontmatter.category))
+  )
+
+  // 2) 카테고리별로 포스트 묶기 (posts 배열은 이미 date DESC 정렬 상태)
   const categorized = {}
   categories.forEach(cat => {
     categorized[cat] = []
   })
   posts.forEach(post => {
     const cat = post.frontmatter.category
-    if (categories.includes(cat)) {
+    if (categorized[cat]) {
       categorized[cat].push(post)
     }
   })
 
-  // 사이드바 열림/닫힘 상태
+  // 3) 사이드바 열림/닫힘 상태 & 랜더 여부
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [renderSidebar, setRenderSidebar] = useState(false)
 
-  // 검색 범위/쿼리 상태
+  // 4) 검색 범위/쿼리 상태
   const [searchScope, setSearchScope] = useState("전체")
   const [searchQuery, setSearchQuery] = useState("")
 
-  // 사이드바 열기
+  // 5) 사이드바 열기 함수
   const openSidebar = () => {
     setRenderSidebar(true)
     setTimeout(() => {
@@ -55,7 +59,7 @@ export default function Home({ data }) {
     }, 10)
   }
 
-  // 사이드바 닫기
+  // 6) 사이드바 닫기 함수
   const closeSidebar = () => {
     setIsSidebarOpen(false)
     setTimeout(() => {
@@ -63,35 +67,30 @@ export default function Home({ data }) {
     }, 300)
   }
 
-  // 검색 핸들러 (실제 로직은 filtered 객체로 처리)
+  // 7) 검색 핸들러 (실제 검색 로직은 아래 filtered 계산에서 처리)
   const handleSearch = e => {
     e.preventDefault()
   }
 
-  // 검색어/범위에 따른 필터링 결과
+  // 8) 검색어/범위에 따른 필터링 결과 계산
   const filtered = {}
   categories.forEach(cat => {
+    // 검색어가 비어 있으면 원본 배열 할당
     if (searchQuery.trim() === "") {
       filtered[cat] = categorized[cat]
     } else {
+      // "전체" 일 때: 모든 카테고리에서 검색어 포함 글만
       if (searchScope === "전체") {
         filtered[cat] = categorized[cat].filter(post =>
-          (
-            post.frontmatter.title +
-            " " +
-            post.excerpt
-          )
+          (post.frontmatter.title + " " + post.excerpt)
             .toLowerCase()
             .includes(searchQuery.toLowerCase())
         )
       } else {
+        // 특정 카테고리 선택 시: 해당 카테고리 내에서만 검색
         if (cat === searchScope) {
           filtered[cat] = categorized[cat].filter(post =>
-            (
-              post.frontmatter.title +
-              " " +
-              post.excerpt
-            )
+            (post.frontmatter.title + " " + post.excerpt)
               .toLowerCase()
               .includes(searchQuery.toLowerCase())
           )
@@ -102,10 +101,20 @@ export default function Home({ data }) {
     }
   })
 
+  // 9) 렌더링할 카테고리 목록 결정
+  // - 검색어가 있고, 특정 카테고리가 선택되었다면 그 카테고리만
+  // - 그렇지 않으면(검색어 없거나 전체 검색 시) 모든 카테고리
+  const displayCategories = (() => {
+    if (searchQuery.trim() !== "" && searchScope !== "전체") {
+      return [searchScope]
+    }
+    return categories
+  })()
+
   return (
     <Layout>
       {/* ──────────────────────────────────────────────────────────── */}
-      {/* 1) 최상단바 (흰색 배경, 고정) */}
+      {/* 1) 최상단바 (흰색 배경, 스크롤 시 함께 사라짐) */}
       <header className="site-header">
         <div className="container">
           {/* 왼쪽: 햄버거 아이콘 */}
@@ -148,7 +157,7 @@ export default function Home({ data }) {
       </header>
 
       {/* ──────────────────────────────────────────────────────────── */}
-      {/* 2) 서브바 (초록색 배경, 헤더 바로 아래 고정) */}
+      {/* 2) 서브바 (초록색 배경, 헤더 바로 아래에 위치, 같이 스크롤 됨) */}
       <div className="sub-header">
         <div className="container">
           <form className="search-form" onSubmit={handleSearch}>
@@ -182,9 +191,7 @@ export default function Home({ data }) {
       {/* 3) 사이드바 (슬라이드 애니메이션) */}
       {renderSidebar && (
         <div
-          className={`sidebar-overlay ${
-            isSidebarOpen ? "open" : ""
-          }`}
+          className={`sidebar-overlay ${isSidebarOpen ? "open" : ""}`}
           onClick={closeSidebar}
         >
           <aside
@@ -229,10 +236,10 @@ export default function Home({ data }) {
       )}
 
       {/* ──────────────────────────────────────────────────────────── */}
-      {/* 4) 메인 콘텐츠: 헤더+서브바 아래에 시작하도록 여백 조정 */}
+      {/* 4) 메인 콘텐츠 */}
       <main className="main-content">
         <div className="container">
-          {categories.map((category) => (
+          {displayCategories.map(category => (
             <section
               id={category}
               key={category}
@@ -249,19 +256,25 @@ export default function Home({ data }) {
                     }}
                   >
                     <div className="card-content">
-                      <p className="post-date">{post.frontmatter.date}</p>
+                      <p className="post-date">
+                        {post.frontmatter.date}
+                      </p>
                       <Link
                         to={`/news${post.fields.slug}`}
                         className="post-title"
                       >
                         {post.frontmatter.title}
                       </Link>
-                      <p className="post-excerpt">{post.excerpt}</p>
+                      <p className="post-excerpt">
+                        {post.excerpt}
+                      </p>
                     </div>
                   </article>
                 ))}
                 {(filtered[category] || []).length === 0 && (
-                  <p className="no-posts">아직 등록된 글이 없습니다.</p>
+                  <p className="no-posts">
+                    아직 등록된 글이 없습니다.
+                  </p>
                 )}
               </div>
             </section>
