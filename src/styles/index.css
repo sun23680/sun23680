@@ -31,7 +31,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
-  height: 60px;
+  height: 70px; /* 높이 조금 키움 */
   border-bottom: 1px solid #e5e5e5;
   position: sticky;
   top: 0;
@@ -61,11 +61,11 @@ body {
 }
 .hamburger-icon,
 .login-icon {
-  width: 24px;
-  height: 24px;
+  width: 28px;  /* 아이콘 약간 키움 */
+  height: 28px;
 }
-.logo-img {
-  height: 40px;
+.logo-img.large-logo {
+  height: 60px; /* 로고 크기 키움 */
   width: auto;
 }
 
@@ -74,7 +74,7 @@ body {
 .sub-header {
   width: 100%;
   background-color: var(--primary-green);
-  padding: 10px 16px;
+  padding: 12px 16px;
 }
 .search-form {
   max-width: 900px;
@@ -128,7 +128,7 @@ body {
   align-items: stretch;
 }
 .sidebar {
-  width: 250px;
+  width: 260px;
   background-color: #fff;
   padding: 20px;
   position: relative;
@@ -221,6 +221,15 @@ body {
   color: var(--text-light);
   line-height: 1.5;
 }
+/* 카테고리에 글이 없을 때 */
+.no-posts {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 14px;
+  padding: 40px 0;
+}
+
 .more-button-wrapper {
   text-align: center;
   margin-top: 24px;
