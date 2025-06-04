@@ -43,16 +43,13 @@ body {
 }
 
 /* -------------------------------------------- */
-/* 3) 최상단바 (흰색 배경, 고정) */
+/* 3) 최상단바 (흰색 배경, 일반 흐름) */
 .site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: var(--header-height);
   background-color: #fff;
   border-bottom: 1px solid #e5e5e5;
-  z-index: 1000;
+  /* position: static; 기본값 */
 }
 .site-header .container {
   display: flex;
@@ -88,25 +85,22 @@ body {
   align-items: center;
 }
 
-/* 로고 크기 및 위/아래 여백 */
+/* 로고 크기 및 위·아래 여백 */
 /* PC 기준 기본값 */
 .logo-img.large-logo {
-  height: 100px;      /* 로고 높이를 크게 설정 */
-  margin-top: 10px;   /* 위쪽 여백 */
-  margin-bottom: 10px;/* 아래쪽 여백 */
+  height: 120px;       /* 더 크게 늘림 */
+  margin-top: 20px;    /* 위쪽 여백 */
+  margin-bottom: 20px; /* 아래쪽 여백 */
   width: auto;
 }
 
 /* -------------------------------------------- */
-/* 4) 서브바 (초록색 배경, 고정) */
+/* 4) 서브바 (초록색 배경, 일반 흐름) */
 .sub-header {
-  position: fixed;
-  top: var(--header-height);
-  left: 0;
   width: 100%;
   height: var(--subheader-height);
   background-color: var(--primary-green);
-  z-index: 999;
+  border-bottom: 1px solid #e5e5e5;
 }
 .sub-header .container {
   display: flex;
@@ -221,7 +215,7 @@ body {
 
 /* -------------------------------------------- */
 /* 6) 본문 콘텐츠 */
-/* 헤더 높이 + 서브바 높이 만큼 본문을 아래로 밀기 */
+/* 헤더 + 서브바 높이 합 만큼 본문을 아래로 밀기 */
 .main-content {
   width: 100%;
   margin-top: calc(var(--header-height) + var(--subheader-height));
@@ -229,7 +223,9 @@ body {
   background-color: #fff;
 }
 
+/* 카테고리 섹션 (검색바와 떨어진 여백) */
 .category-section {
+  margin-top: 40px; /* 검색바와의 여백을 충분히 띄움 */
   margin-bottom: 60px;
 }
 .section-title {
@@ -322,30 +318,27 @@ body {
 /* PC (1024px 이상) */
 @media screen and (min-width: 1024px) {
   .logo-img.large-logo {
-    height: 100px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    height: 120px;
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 
 /* 태블릿 (768px ~ 1023px) */
 @media screen and (max-width: 1023px) and (min-width: 768px) {
   .logo-img.large-logo {
-    height: 80px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    height: 100px;
+    margin-top: 16px;
+    margin-bottom: 16px;
   }
 }
 
 /* 모바일 (767px 이하) */
 @media screen and (max-width: 767px) {
   .logo-img.large-logo {
-    height: 60px;
-    margin-top: 6px;
-    margin-bottom: 6px;
-  }
-  .site-header .container {
-    height: var(--header-height);
+    height: 80px;
+    margin-top: 12px;
+    margin-bottom: 12px;
   }
   .search-form {
     flex-direction: column;
