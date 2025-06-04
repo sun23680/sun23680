@@ -27,7 +27,7 @@ export default function Home({ data }) {
   const posts = data.allMarkdownRemark.nodes
   const categories = ["정치", "사회", "민생", "문화", "칼럼", "공지사항"]
 
-  // 카테고리별로 포스트 묶기
+  // 1) 카테고리별로 포스트 묶기
   const categorized = {}
   posts.forEach(post => {
     const cat = post.frontmatter.category
@@ -35,11 +35,12 @@ export default function Home({ data }) {
     categorized[cat].push(post)
   })
 
-  // 상태 관리
+  // 2) 사이드바 여닫기 상태
   const [menuOpen, setMenuOpen] = useState(false)
+
+  // 3) 검색 범위/쿼리 상태
   const [searchScope, setSearchScope] = useState("전체")
   const [searchQuery, setSearchQuery] = useState("")
-  const [activeCat, setActiveCat] = useState("정치")
 
   const handleSearch = e => {
     e.preventDefault()
@@ -67,13 +68,13 @@ export default function Home({ data }) {
           </button>
         </div>
 
-        {/* 가운데: 로고 */}
+        {/* 가운데: 로고 (크기 키움) */}
         <div className="header-center">
           <Link to="/">
             <img
               src="/uploads/logo.svg"
               alt="logo"
-              className="logo-img"
+              className="logo-img large-logo"
             />
           </Link>
         </div>
@@ -155,7 +156,10 @@ export default function Home({ data }) {
               <Link to="/category/칼럼" onClick={() => setMenuOpen(false)}>
                 칼럼
               </Link>
-              <Link to="/category/공지사항" onClick={() => setMenuOpen(false)}>
+              <Link
+                to="/category/공지사항"
+                onClick={() => setMenuOpen(false)}
+              >
                 공지사항
               </Link>
               <Link to="/support" onClick={() => setMenuOpen(false)}>
@@ -167,38 +171,33 @@ export default function Home({ data }) {
       )}
 
       {/* ────────────────────────────────────────────── */}
-      {/* 4) 메인 콘텐츠: 카테고리별 뉴스 카드(예시: '정치' 카테고리) */}
+      {/* 4) 메인 콘텐츠: 각 카테고리별 섹션을 모두 노출 */}
       <main className="main-content">
-        <section className="category-section">
-          <h2 className="section-title">{activeCat}</h2>
-          <div className="news-grid">
-            {(categorized[activeCat] || []).slice(0, 6).map(post => (
-              <article key={post.id} className="news-card">
-                <div className="card-content">
-                  <p className="post-date">{post.frontmatter.date}</p>
-                  <Link
-                    to={`/news${post.fields.slug}`}
-                    className="post-title"
-                  >
-                    {post.frontmatter.title}
-                  </Link>
-                  <p className="post-excerpt">{post.excerpt}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-          {categorized[activeCat] &&
-            categorized[activeCat].length > 6 && (
-              <div className="more-button-wrapper">
-                <Link
-                  to={`/category/${activeCat}`}
-                  className="more-button"
-                >
-                  더보기 →
-                </Link>
-              </div>
-            )}
-        </section>
+        {categories.map(category => (
+          <section id={category} key={category} className="category-section">
+            <h2 className="section-title">{category}</h2>
+            <div className="news-grid">
+              {(categorized[category] || []).map(post => (
+                <article key={post.id} className="news-card">
+                  <div className="card-content">
+                    <p className="post-date">{post.frontmatter.date}</p>
+                    <Link
+                      to={post.fields.slug} {/* 슬러그 그대로 사용 */}
+                      className="post-title"
+                    >
+                      {post.frontmatter.title}
+                    </Link>
+                    <p className="post-excerpt">{post.excerpt}</p>
+                  </div>
+                </article>
+              ))}
+              {/* 만약 해당 카테고리에 글이 하나도 없으면 메시지 출력 */}
+              {(categorized[category] || []).length === 0 && (
+                <p className="no-posts">아직 등록된 글이 없습니다.</p>
+              )}
+            </div>
+          </section>
+        ))}
       </main>
 
       {/* ────────────────────────────────────────────── */}
@@ -213,3 +212,4 @@ export default function Home({ data }) {
     </Layout>
   )
 }
+
