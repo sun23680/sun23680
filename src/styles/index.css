@@ -3,12 +3,13 @@
 /* -------------------------------------------- */
 /* 1) 공통 변수 및 리셋 */
 :root {
-  --primary-green: #1eb477; /* 초록색 바 배경 */
+  --primary-green: #1eb477;
   --text-dark: #222;
   --text-light: #666;
   --card-border: #e0e0e0;
   --hover-shadow: rgba(0, 0, 0, 0.1);
   --footer-bg: #f7f7f7;
+  --container-max-width: 1200px;
 }
 * {
   margin: 0;
@@ -23,65 +24,88 @@ body {
 }
 
 /* -------------------------------------------- */
-/* 2) 최상단바 (흰색) */
+/* 2) 중앙 정렬용 .container */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* -------------------------------------------- */
+/* 3) 최상단바 (흰색 배경) */
 .site-header {
   width: 100%;
   background-color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  height: 70px; /* 높이 조금 키움 */
   border-bottom: 1px solid #e5e5e5;
   position: sticky;
   top: 0;
   z-index: 1000;
 }
-.header-left,
-.header-center,
-.header-right {
+.site-header .container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  height: 90px; /* 로고 위아래 여백 충분히 확보 */
 }
-.header-left {
-  flex: 0 0 auto;
-}
-.header-center {
-  flex: 1 1 auto;
-  justify-content: center;
-}
-.header-right {
-  flex: 0 0 auto;
-}
+
+/* 햄버거 & 로그인 버튼 */
 .hamburger-btn,
 .login-btn {
   background: none;
   border: none;
   cursor: pointer;
 }
-.hamburger-icon,
-.login-icon {
-  width: 28px;  /* 아이콘 약간 키움 */
-  height: 28px;
+
+/* 햄버거 아이콘 */
+.hamburger-icon {
+  width: 32px;
+  height: 32px;
 }
+
+/* 로그인 아이콘 */
+.login-icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* 로고 중앙 정렬 */
+.header-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 로고 크기(기본) */
 .logo-img.large-logo {
-  height: 60px; /* 로고 크기 키움 */
+  height: 80px;
   width: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 /* -------------------------------------------- */
-/* 3) 서브바 (초록색) */
+/* 4) 서브바 (초록색 배경) */
 .sub-header {
   width: 100%;
   background-color: var(--primary-green);
-  padding: 12px 16px;
 }
+.sub-header .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
+}
+
 .search-form {
-  max-width: 900px;
-  margin: 0 auto;
   display: flex;
   gap: 8px;
+  width: 100%;
+  max-width: 900px;
 }
+
 .search-select {
   flex: 0 0 100px;
   border: none;
@@ -90,6 +114,7 @@ body {
   font-size: 14px;
   outline: none;
 }
+
 .search-input {
   flex: 1 1 auto;
   border: none;
@@ -98,6 +123,7 @@ body {
   font-size: 14px;
   outline: none;
 }
+
 .search-button {
   flex: 0 0 auto;
   background-color: #fff;
@@ -114,27 +140,47 @@ body {
 }
 
 /* -------------------------------------------- */
-/* 4) 사이드바 Overlay */
+/* 5) 사이드바 Overlay 및 애니메이션 */
 .sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 1100;
+  background: rgba(0, 0, 0, 0); /* 기본은 투명 */
+  opacity: 0;
+  visibility: hidden;
+  transition: background 0.3s ease, opacity 0.3s ease;
+
   display: flex;
   justify-content: flex-start;
   align-items: stretch;
+  z-index: 1100;
 }
+.sidebar-overlay.open {
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 사이드바 자체 */
 .sidebar {
   width: 260px;
   background-color: #fff;
   padding: 20px;
   position: relative;
+
+  /* 기본 상태: 화면 왼쪽 바깥으로 배치 */
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
   box-shadow: 2px 0 8px var(--hover-shadow);
   overflow-y: auto;
 }
+.sidebar.open {
+  /* open 클래스가 붙으면 0으로 이동하여 슬라이드 인(들어옴) */
+  transform: translateX(0);
+}
+
 .close-sidebar {
   position: absolute;
   top: 12px;
@@ -145,6 +191,7 @@ body {
   cursor: pointer;
   color: var(--text-light);
 }
+
 .sidebar-nav {
   margin-top: 40px;
   display: flex;
@@ -162,11 +209,11 @@ body {
 }
 
 /* -------------------------------------------- */
-/* 5) 본문 콘텐츠 */
+/* 6) 본문 콘텐츠 & 뉴스 카드 애니메이션 */
 .main-content {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 16px;
+  width: 100%;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 .category-section {
   margin-bottom: 60px;
@@ -179,23 +226,35 @@ body {
   border-left: 6px solid var(--primary-green);
   padding-left: 12px;
 }
+
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 24px;
 }
+
 .news-card {
   background-color: #fff;
   border: 1px solid var(--card-border);
   border-radius: 4px;
   overflow: hidden;
-  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
   cursor: pointer;
+
+  /* 초기 상태: 투명 + 아래로 약간 이동 */
+  opacity: 0;
+  transform: translateY(10px);
+
+  /* 애니메이션: Fade-In + 슬라이드업 */
+  animation: fadeInUp 0.4s forwards;
 }
-.news-card:hover {
-  box-shadow: 0 4px 12px var(--hover-shadow);
-  transform: translateY(-4px);
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .card-content {
   padding: 16px;
 }
@@ -221,6 +280,7 @@ body {
   color: var(--text-light);
   line-height: 1.5;
 }
+
 /* 카테고리에 글이 없을 때 */
 .no-posts {
   grid-column: 1 / -1;
@@ -230,47 +290,48 @@ body {
   padding: 40px 0;
 }
 
-.more-button-wrapper {
-  text-align: center;
-  margin-top: 24px;
-}
-.more-button {
-  display: inline-block;
-  background-color: var(--primary-green);
-  color: #fff;
-  font-size: 14px;
-  padding: 8px 20px;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: background-color 0.2s ease-in-out;
-}
-.more-button:hover {
-  background-color: #17a36e;
-}
-
 /* -------------------------------------------- */
-/* 6) 하단바 (Footer) */
+/* 7) 하단바 (Footer) */
 .site-footer {
   width: 100%;
   background-color: var(--footer-bg);
-  padding: 24px 16px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   border-top: 1px solid #e5e5e5;
-  margin-top: 60px;
 }
 .footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-  color: var(--text-light);
-  font-size: 14px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 14px;
 }
 
 /* -------------------------------------------- */
-/* 7) 반응형 */
-@media screen and (max-width: 768px) {
+/* 8) 반응형 */
+/* PC (1024px 이상) */
+@media screen and (min-width: 1024px) {
+  .logo-img.large-logo {
+    height: 100px;
+  }
+}
+
+/* 태블릿 (768px ~ 1023px) */
+@media screen and (max-width: 1023px) and (min-width: 768px) {
+  .logo-img.large-logo {
+    height: 80px;
+  }
+}
+
+/* 모바일 (767px 이하) */
+@media screen and (max-width: 767px) {
+  .logo-img.large-logo {
+    height: 50px;
+  }
+  .site-header .container {
+    height: 70px;
+  }
   .search-form {
     flex-direction: column;
     gap: 8px;
@@ -280,19 +341,16 @@ body {
   .search-button {
     width: 100%;
   }
-
-  .news-grid {
-    gap: 16px;
-  }
   .section-title {
     font-size: 20px;
   }
+  .news-grid {
+    gap: 16px;
+  }
 }
 
+/* 작은 모바일 (480px 이하) */
 @media screen and (max-width: 480px) {
-  .search-form {
-    padding: 0 8px;
-  }
   .section-title {
     font-size: 18px;
   }
