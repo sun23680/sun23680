@@ -60,7 +60,7 @@ export default function Home({ data }) {
             aria-label="메뉴 열기"
           >
             <img
-              src="/static/uploads/hamburger.svg"
+              src="/uploads/hamburger.svg"
               alt="메뉴"
               className="hamburger-icon"
             />
@@ -71,7 +71,7 @@ export default function Home({ data }) {
         <div className="header-center">
           <Link to="/">
             <img
-              src="/static/uploads/logo.svg"
+              src="/uploads/logo.svg"
               alt="logo"
               className="logo-img"
             />
@@ -82,7 +82,7 @@ export default function Home({ data }) {
         <div className="header-right">
           <Link to="/login" className="login-btn" aria-label="로그인">
             <img
-              src="/static/uploads/login-icon.svg"
+              src="/uploads/login_icon.svg"
               alt="로그인"
               className="login-icon"
             />
