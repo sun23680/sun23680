@@ -3,12 +3,12 @@
 /* -------------------------------------------- */
 /* 1) 공통 변수 및 리셋 */
 :root {
-  --primary-red: #c40505; /* 한겨레 사이트 헤더 레드 컬러 */
-  --secondary-gray: #f2f2f2;
+  --primary-green: #1eb477; /* 초록색 바 배경 */
   --text-dark: #222;
   --text-light: #666;
   --card-border: #e0e0e0;
   --hover-shadow: rgba(0, 0, 0, 0.1);
+  --footer-bg: #f7f7f7;
 }
 * {
   margin: 0;
@@ -23,116 +23,151 @@ body {
 }
 
 /* -------------------------------------------- */
-/* 2) 헤더 스타일 */
+/* 2) 최상단바 (흰색) */
 .site-header {
   width: 100%;
-  background-color: var(--primary-red);
+  background-color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 16px;
   height: 60px;
+  border-bottom: 1px solid #e5e5e5;
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 1000;
 }
-.header-left .logo-link {
-  display: block;
-  line-height: 1;
-}
-.header-left .logo-img {
-  height: 36px;
-  width: auto;
-}
-/* 상단 네비게이션(카테고리) */
+.header-left,
+.header-center,
 .header-right {
   display: flex;
   align-items: center;
 }
-.top-nav {
-  display: flex;
-  gap: 24px;
-  margin-right: 24px;
+.header-left {
+  flex: 0 0 auto;
 }
-.top-nav .nav-item {
+.header-center {
+  flex: 1 1 auto;
+  justify-content: center;
+}
+.header-right {
+  flex: 0 0 auto;
+}
+.hamburger-btn,
+.login-btn {
   background: none;
   border: none;
-  color: #fff;
-  font-size: 16px;
   cursor: pointer;
-  position: relative;
-  padding: 8px 0;
-  transition: color 0.2s ease-in-out;
 }
-.top-nav .nav-item:hover,
-.top-nav .nav-item.active {
-  color: #fff;
+.hamburger-icon,
+.login-icon {
+  width: 24px;
+  height: 24px;
 }
-.top-nav .nav-item.active::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #fff;
-}
-
-/* 검색 아이콘 + 입력창 */
-.search-container {
-  position: relative;
-}
-.search-icon-btn {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 8px;
-}
-.search-form-header {
-  position: absolute;
-  top: 38px;
-  right: 0;
-  background-color: #fff;
-  border: 1px solid var(--card-border);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  padding: 4px 8px;
-  box-shadow: 0 2px 6px var(--hover-shadow);
-  z-index: 998;
-}
-.search-input-header {
-  border: none;
-  outline: none;
-  font-size: 14px;
-  padding: 6px 8px;
-  width: 180px;
-}
-.search-submit-btn {
-  background-color: var(--primary-red);
-  border: none;
-  color: #fff;
-  font-size: 14px;
-  padding: 6px 12px;
-  margin-left: 4px;
-  cursor: pointer;
-  border-radius: 2px;
-  transition: background-color 0.2s ease-in-out;
-}
-.search-submit-btn:hover {
-  background-color: #a00303;
+.logo-img {
+  height: 40px;
+  width: auto;
 }
 
 /* -------------------------------------------- */
-/* 3) 본문 메인 콘텐츠 */
+/* 3) 서브바 (초록색) */
+.sub-header {
+  width: 100%;
+  background-color: var(--primary-green);
+  padding: 10px 16px;
+}
+.search-form {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+}
+.search-select {
+  flex: 0 0 100px;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+}
+.search-input {
+  flex: 1 1 auto;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+}
+.search-button {
+  flex: 0 0 auto;
+  background-color: #fff;
+  color: var(--text-dark);
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.search-button:hover {
+  background-color: #f2f2f2;
+}
+
+/* -------------------------------------------- */
+/* 4) 사이드바 Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1100;
+  display: flex;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+.sidebar {
+  width: 250px;
+  background-color: #fff;
+  padding: 20px;
+  position: relative;
+  box-shadow: 2px 0 8px var(--hover-shadow);
+  overflow-y: auto;
+}
+.close-sidebar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-light);
+}
+.sidebar-nav {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.sidebar-nav a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-size: 16px;
+  transition: color 0.2s ease-in-out;
+}
+.sidebar-nav a:hover {
+  color: var(--primary-green);
+}
+
+/* -------------------------------------------- */
+/* 5) 본문 콘텐츠 */
 .main-content {
   max-width: 1200px;
   margin: 40px auto;
-  padding: 0 20px;
+  padding: 0 16px;
 }
-/* 카테고리 섹션 제목 */
 .category-section {
   margin-bottom: 60px;
 }
@@ -141,11 +176,9 @@ body {
   font-weight: 700;
   margin-bottom: 24px;
   color: var(--text-dark);
-  border-left: 6px solid var(--primary-red);
+  border-left: 6px solid var(--primary-green);
   padding-left: 12px;
 }
-
-/* 뉴스 카드 그리드 */
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -181,80 +214,87 @@ body {
   transition: color 0.2s ease-in-out;
 }
 .post-title:hover {
-  color: var(--primary-red);
+  color: var(--primary-green);
 }
 .post-excerpt {
   font-size: 14px;
   color: var(--text-light);
   line-height: 1.5;
 }
-
-/* 더보기 버튼 */
 .more-button-wrapper {
   text-align: center;
   margin-top: 24px;
 }
 .more-button {
   display: inline-block;
-  background-color: var(--primary-red);
+  background-color: var(--primary-green);
   color: #fff;
   font-size: 14px;
   padding: 8px 20px;
-  border-radius: 2px;
+  border-radius: 4px;
   text-decoration: none;
   transition: background-color 0.2s ease-in-out;
 }
 .more-button:hover {
-  background-color: #a00303;
+  background-color: #17a36e;
 }
 
 /* -------------------------------------------- */
-/* 4) 반응형 */
+/* 6) 하단바 (Footer) */
+.site-footer {
+  width: 100%;
+  background-color: var(--footer-bg);
+  padding: 24px 16px;
+  border-top: 1px solid #e5e5e5;
+  margin-top: 60px;
+}
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* -------------------------------------------- */
+/* 7) 반응형 */
 @media screen and (max-width: 768px) {
-  .top-nav {
-    display: none; /* 모바일에서는 탭 형태 숨김 (햄버거 메뉴 등 별도 구현 필요 시 추가) */
+  .search-form {
+    flex-direction: column;
+    gap: 8px;
   }
-  .header-right {
-    flex-direction: row-reverse;
-    gap: 12px;
+  .search-select,
+  .search-input,
+  .search-button {
+    width: 100%;
   }
-  .search-form-header {
-    right: 10px;
-    top: 48px;
+
+  .news-grid {
+    gap: 16px;
   }
   .section-title {
     font-size: 20px;
   }
-  .news-grid {
-    gap: 16px;
-  }
-  .card-content {
-    padding: 12px;
-  }
-  .post-title {
-    font-size: 16px;
-  }
-  .post-excerpt {
-    font-size: 13px;
-  }
 }
+
 @media screen and (max-width: 480px) {
-  .main-content {
-    margin: 20px auto;
-    padding: 0 12px;
+  .search-form {
+    padding: 0 8px;
   }
   .section-title {
     font-size: 18px;
-    margin-bottom: 16px;
   }
   .news-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
   .post-title {
-    font-size: 15px;
+    font-size: 16px;
   }
   .post-excerpt {
-    font-size: 12px;
+    font-size: 13px;
   }
 }
