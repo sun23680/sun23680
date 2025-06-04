@@ -21,22 +21,72 @@
     }
     header {
       background-color: white;
-      padding: 1rem 2rem;
+      padding: 0.5rem 1rem;
       border-bottom: 2px solid var(--primary-color);
-      position: relative;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+      position: relative;
     }
-    header .logo {
-      max-width: 280px;
-      width: 100%;
+    .logo {
+      max-width: 220px;
       height: auto;
     }
     .menu-icon {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
       cursor: pointer;
+    }
+    .search-bar-wrapper {
+      background: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .search-form {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .search-form input[type="text"] {
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 160px;
+    }
+    .search-form select,
+    .search-form button {
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    .menu-bar {
+      background-color: var(--primary-color);
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 1rem;
+    }
+    .menu-bar nav {
+      display: flex;
+    }
+    .menu-bar a {
+      color: white;
+      margin: 0 0.75rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .menu-bar a:hover {
+      text-decoration: underline;
     }
     .side-menu {
       height: 100%;
@@ -44,12 +94,12 @@
       position: fixed;
       z-index: 1000;
       top: 0;
-      left: 0;
+      right: 0;
       background-color: #fff;
       overflow-x: hidden;
       transition: 0.3s;
       padding-top: 60px;
-      border-right: 1px solid #ccc;
+      border-left: 1px solid #ccc;
     }
     .side-menu a {
       padding: 8px 32px;
@@ -65,51 +115,8 @@
     .side-menu .closebtn {
       position: absolute;
       top: 10px;
-      right: 20px;
+      left: 20px;
       font-size: 30px;
-      cursor: pointer;
-    }
-    .menu-bar {
-      background-color: var(--primary-color);
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
-    }
-    .menu-bar nav {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .menu-bar a {
-      color: white;
-      margin: 0 0.5rem;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .menu-bar a:hover {
-      text-decoration: underline;
-    }
-    .search-form {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: white;
-      border-radius: 4px;
-      padding: 0.25rem 0.5rem;
-    }
-    .search-form input[type="text"] {
-      padding: 0.25rem 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .search-form select,
-    .search-form button {
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      background-color: #fff;
       cursor: pointer;
     }
     main {
@@ -142,39 +149,36 @@
       padding: 2rem;
       background: #e9f5f1;
     }
+    @media (max-width: 768px) {
+      header {
+        justify-content: center;
+      }
+      .logo {
+        max-width: 160px;
+      }
+      .menu-icon {
+        right: 1rem;
+        top: 0.75rem;
+      }
+      .search-bar-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+    @media (min-width: 769px) {
+      .search-bar-wrapper {
+        padding: 2rem;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
+    <img src="/static/uploads/logo.svg" alt="logo" class="logo" />
     <img src="/static/uploads/hamburger.svg" alt="menu" class="menu-icon" onclick="openMenu()" />
-    <a href="index.html">
-      <img src="/static/uploads/logo.svg" alt="logo" class="logo" />
-    </a>
   </header>
 
-  <div id="sideMenu" class="side-menu">
-    <span class="closebtn" onclick="closeMenu()">&times;</span>
-    <a href="#politics">정치</a>
-    <a href="#society">사회</a>
-    <a href="#life">민생</a>
-    <a href="#culture">문화</a>
-    <a href="#opinion">칼럼</a>
-    <a href="#notice">공지사항</a>
-    <a href="#report">제보하기</a>
-    <a href="#support">후원·구독하기</a>
-  </div>
-
-  <div class="menu-bar">
-    <nav>
-      <a href="#politics">정치</a>
-      <a href="#society">사회</a>
-      <a href="#life">민생</a>
-      <a href="#culture">문화</a>
-      <a href="#opinion">칼럼</a>
-      <a href="#notice">공지사항</a>
-      <a href="#report">제보하기</a>
-      <a href="#support">후원·구독하기</a>
-    </nav>
+  <div class="search-bar-wrapper">
     <form class="search-form" onsubmit="event.preventDefault(); performSearch();">
       <select id="search-scope">
         <option value="all">전체</option>
@@ -191,39 +195,33 @@
     </form>
   </div>
 
+  <div class="menu-bar">
+    <nav>
+      <a href="#politics">정치</a>
+      <a href="#society">사회</a>
+      <a href="#life">민생</a>
+      <a href="#culture">문화</a>
+      <a href="#opinion">칼럼</a>
+      <a href="#notice">공지사항</a>
+      <a href="#report">제보하기</a>
+      <a href="#support">후원·구독하기</a>
+    </nav>
+  </div>
+
+  <div id="sideMenu" class="side-menu">
+    <span class="closebtn" onclick="closeMenu()">&times;</span>
+    <a href="#politics">정치</a>
+    <a href="#society">사회</a>
+    <a href="#life">민생</a>
+    <a href="#culture">문화</a>
+    <a href="#opinion">칼럼</a>
+    <a href="#notice">공지사항</a>
+    <a href="#report">제보하기</a>
+    <a href="#support">후원·구독하기</a>
+  </div>
+
   <main>
-    <section id="politics">
-      <h2>정치</h2>
-      <div class="news-list" data-category="정치">불러오는 중...</div>
-    </section>
-    <section id="society">
-      <h2>사회</h2>
-      <div class="news-list" data-category="사회">불러오는 중...</div>
-    </section>
-    <section id="life">
-      <h2>민생</h2>
-      <div class="news-list" data-category="민생">불러오는 중...</div>
-    </section>
-    <section id="culture">
-      <h2>문화</h2>
-      <div class="news-list" data-category="문화">불러오는 중...</div>
-    </section>
-    <section id="opinion">
-      <h2>칼럼</h2>
-      <div class="news-list" data-category="칼럼">불러오는 중...</div>
-    </section>
-    <section id="notice">
-      <h2>공지사항</h2>
-      <div class="news-list" data-category="공지사항">불러오는 중...</div>
-    </section>
-    <section id="report">
-      <h2>제보하기</h2>
-      <div class="news-list" data-category="제보하기">불러오는 중...</div>
-    </section>
-    <section id="support">
-      <h2>후원·구독하기</h2>
-      <p class="support-link">정기후원과 뉴스레터 구독으로 거리로를 응원해 주세요.</p>
-    </section>
+    
   </main>
 
   <script>
@@ -233,71 +231,9 @@
     function closeMenu() {
       document.getElementById("sideMenu").style.width = "0";
     }
-
-    const postList = [
-      "/content/news/2025-06-04-example.md"
-    ];
-
-    const allPosts = [];
-
-    async function loadPosts() {
-      for (const url of postList) {
-        try {
-          const res = await fetch(url);
-          const text = await res.text();
-          const metaMatch = text.match(/---([\s\S]*?)---/);
-          const content = text.replace(/---([\s\S]*?)---/, "").trim();
-          const metadata = {};
-
-          if (metaMatch) {
-            metaMatch[1].trim().split("\n").forEach(line => {
-              const [key, ...rest] = line.split(":");
-              metadata[key.trim()] = rest.join(":").trim();
-            });
-          }
-
-          const html = marked.parse(content);
-          const article = document.createElement("article");
-          article.innerHTML = `
-            <div class="post-title">${metadata.title || "제목 없음"}</div>
-            <div class="post-date">${metadata.date || ""}</div>
-            <div class="post-body">${html}</div>
-          `;
-
-          article.dataset.category = metadata.category;
-          article.dataset.title = metadata.title;
-
-          allPosts.push(article);
-
-          const target = document.querySelector(`[data-category="${metadata.category}"]`);
-          if (target) {
-            if (target.innerHTML.includes("불러오는 중")) target.innerHTML = "";
-            target.appendChild(article.cloneNode(true));
-          }
-        } catch (e) {
-          console.error("불러오기 실패:", url, e);
-        }
-      }
-    }
-
-    function performSearch() {
-      const keyword = document.getElementById("search-query").value.trim();
-      const scope = document.getElementById("search-scope").value;
-
-      document.querySelectorAll(".news-list").forEach(div => div.innerHTML = "");
-
-      allPosts.forEach(post => {
-        const title = post.dataset.title || "";
-        const category = post.dataset.category || "";
-
-        if ((scope === "all" || category === scope) && title.includes(keyword)) {
-          const target = document.querySelector(`[data-category="${category}"]`);
-          if (target) target.appendChild(post.cloneNode(true));
-        }
-      });
-    }
-
-    loadPosts();
+  </script>
+</body>
+</html>
   </script>
 </body>
 </html>
