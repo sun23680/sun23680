@@ -8,7 +8,7 @@ public_folder: "static/uploads/"
 collections:
   - name: "news"
     label: "뉴스"
-    folder: "content/news"
+    folder: "content/news/"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
