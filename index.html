@@ -22,14 +22,52 @@
     header {
       background-color: white;
       padding: 1rem 2rem;
-      text-align: center;
       border-bottom: 2px solid var(--primary-color);
       position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     header .logo {
       max-width: 280px;
       width: 100%;
       height: auto;
+    }
+    .menu-icon {
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+    }
+    .side-menu {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1000;
+      top: 0;
+      left: 0;
+      background-color: #fff;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding-top: 60px;
+      border-right: 1px solid #ccc;
+    }
+    .side-menu a {
+      padding: 8px 32px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #111;
+      display: block;
+      transition: 0.3s;
+    }
+    .side-menu a:hover {
+      background-color: #f1f1f1;
+    }
+    .side-menu .closebtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 30px;
+      cursor: pointer;
     }
     .menu-bar {
       background-color: var(--primary-color);
@@ -57,14 +95,27 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      background: white;
+      border-radius: 4px;
+      padding: 0.25rem 0.5rem;
     }
     .search-form input[type="text"] {
-      padding: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-form select,
+    .search-form button {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      cursor: pointer;
     }
     main {
       padding: 2rem;
       max-width: 960px;
-      margin: auto;
+      margin: 0 auto;
     }
     section {
       margin-bottom: 3rem;
@@ -95,10 +146,23 @@
 </head>
 <body>
   <header>
+    <img src="/static/uploads/hamburger.svg" alt="menu" class="menu-icon" onclick="openMenu()" />
     <a href="index.html">
       <img src="/static/uploads/logo.svg" alt="logo" class="logo" />
     </a>
   </header>
+
+  <div id="sideMenu" class="side-menu">
+    <span class="closebtn" onclick="closeMenu()">&times;</span>
+    <a href="#politics">정치</a>
+    <a href="#society">사회</a>
+    <a href="#life">민생</a>
+    <a href="#culture">문화</a>
+    <a href="#opinion">칼럼</a>
+    <a href="#notice">공지사항</a>
+    <a href="#report">제보하기</a>
+    <a href="#support">후원·구독하기</a>
+  </div>
 
   <div class="menu-bar">
     <nav>
@@ -163,6 +227,13 @@
   </main>
 
   <script>
+    function openMenu() {
+      document.getElementById("sideMenu").style.width = "250px";
+    }
+    function closeMenu() {
+      document.getElementById("sideMenu").style.width = "0";
+    }
+
     const postList = [
       "/content/news/2025-06-04-example.md"
     ];
@@ -227,9 +298,6 @@
     }
 
     loadPosts();
-  </script>
-</body>
-</html>
   </script>
 </body>
 </html>
