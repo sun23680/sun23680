@@ -1,4 +1,3 @@
-// src/pages/index.js
 import React, { useState } from "react"
 import { graphql, Link } from "gatsby"
 import Layout from "../components/Layout"
@@ -87,7 +86,7 @@ export default function Home({ data }) {
         </div>
       )}
 
-      <main>
+      <main className="main-centered">
         {categories.map(category => (
           <section id={category} key={category} className="category-section">
             <h2>{category}</h2>
