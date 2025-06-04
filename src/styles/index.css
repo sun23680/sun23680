@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f4fdf9;
+  color: #222;
+}
+
+header {
+  background-color: white;
+  padding: 1rem;
+  border-bottom: 2px solid #1eb477;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.logo {
+  max-width: 240px;
+  height: auto;
+  margin-top: 0.75rem;
+}
+
+.menu-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  cursor: pointer;
+}
+
+.search-bar-wrapper {
+  padding: 1rem;
+  background: white;
+}
+
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.menu-bar nav, .side-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.news-list {
+  padding: 1rem;
+}
+
+.post-title {
+  font-weight: bold;
+  text-decoration: none;
+  color: #1eb477;
+}
+
+.post-date {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: white;
+  width: 250px;
+  height: 100vh;
+  z-index: 1000;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.side-menu .closebtn {
+  font-size: 30px;
+  text-align: right;
+  cursor: pointer;
+}
