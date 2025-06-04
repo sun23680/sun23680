@@ -50,7 +50,6 @@ export default function Home({ data }) {
 
   return (
     <Layout>
-      {/* ────────────────────────────────────────────── */}
       {/* 1) 최상단바 (흰색 배경) */}
       <header className="site-header">
         {/* 왼쪽: 햄버거 아이콘 */}
@@ -91,7 +90,6 @@ export default function Home({ data }) {
         </div>
       </header>
 
-      {/* ────────────────────────────────────────────── */}
       {/* 2) 서브바 (초록색 배경) */}
       <div className="sub-header">
         <form className="search-form" onSubmit={handleSearch}>
@@ -120,7 +118,6 @@ export default function Home({ data }) {
         </form>
       </div>
 
-      {/* ────────────────────────────────────────────── */}
       {/* 3) 사이드바 (메뉴열기 시) */}
       {menuOpen && (
         <div className="sidebar-overlay" onClick={() => setMenuOpen(false)}>
@@ -170,7 +167,6 @@ export default function Home({ data }) {
         </div>
       )}
 
-      {/* ────────────────────────────────────────────── */}
       {/* 4) 메인 콘텐츠: 각 카테고리별 섹션을 모두 노출 */}
       <main className="main-content">
         {categories.map(category => (
@@ -181,17 +177,13 @@ export default function Home({ data }) {
                 <article key={post.id} className="news-card">
                   <div className="card-content">
                     <p className="post-date">{post.frontmatter.date}</p>
-                    <Link
-                      to={post.fields.slug} {/* 슬러그 그대로 사용 */}
-                      className="post-title"
-                    >
+                    <Link to={post.fields.slug} className="post-title">
                       {post.frontmatter.title}
                     </Link>
                     <p className="post-excerpt">{post.excerpt}</p>
                   </div>
                 </article>
               ))}
-              {/* 만약 해당 카테고리에 글이 하나도 없으면 메시지 출력 */}
               {(categorized[category] || []).length === 0 && (
                 <p className="no-posts">아직 등록된 글이 없습니다.</p>
               )}
@@ -200,7 +192,6 @@ export default function Home({ data }) {
         ))}
       </main>
 
-      {/* ────────────────────────────────────────────── */}
       {/* 5) 하단바 (Footer) */}
       <footer className="site-footer">
         <div className="footer-content">
@@ -212,4 +203,3 @@ export default function Home({ data }) {
     </Layout>
   )
 }
-
