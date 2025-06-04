@@ -2,13 +2,13 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "pages/uploads/"
-public_folder: "pages/uploads/"
+media_folder: "/pages/uploads/"
+public_folder: "/pages/uploads/"
 
 collections:
   - name: "news"
     label: "뉴스"
-    folder: "content/news/"
+    folder: "/content/news/"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
