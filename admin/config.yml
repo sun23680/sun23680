@@ -14,5 +14,5 @@ collections:
     fields:
       - { label: "제목", name: "title", widget: "string" }
       - { label: "날짜", name: "date", widget: "datetime" }
-      - { label: "카테고리", name: "category", widget: "select", options: ["정치", "사회", "민생", "문화"] }
+      - { label: "카테고리", name: "category", widget: "select", options: ["정치", "사회", "민생", "문화","칼럼"] }
       - { label: "본문", name: "body", widget: "markdown" }
