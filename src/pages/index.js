@@ -1,5 +1,5 @@
 // src/pages/index.js
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { graphql, Link } from "gatsby"
 import Layout from "../components/Layout"
 import "../styles/index.css"
@@ -27,7 +27,7 @@ export default function Home({ data }) {
   const posts = data.allMarkdownRemark.nodes
   const categories = ["정치", "사회", "민생", "문화", "칼럼", "공지사항"]
 
-  // 1) 카테고리별로 포스트 묶기 (역순: 최신이 앞)
+  // 카테고리별로 포스트 묶기 (최신 → 오래된 순으로 이미 정렬됨)
   const categorized = {}
   categories.forEach(cat => {
     categorized[cat] = []
@@ -39,57 +39,59 @@ export default function Home({ data }) {
     }
   })
 
-  // 2) 사이드바 열림/닫힘 상태
+  // 사이드바 열림/닫힘 상태
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [renderSidebar, setRenderSidebar] = useState(false)
 
-  // 3) 검색 범위/쿼리 상태
+  // 검색 범위/쿼리 상태
   const [searchScope, setSearchScope] = useState("전체")
   const [searchQuery, setSearchQuery] = useState("")
 
-  // 4) 사이드바 열기 함수
+  // 사이드바 열기
   const openSidebar = () => {
     setRenderSidebar(true)
-    // 마운트 후 살짝 딜레이를 주고 open 클래스 붙이기
     setTimeout(() => {
       setIsSidebarOpen(true)
     }, 10)
   }
 
-  // 5) 사이드바 닫기 함수
+  // 사이드바 닫기
   const closeSidebar = () => {
     setIsSidebarOpen(false)
-    // 애니메이션(0.3s) 끝난 뒤 실제로 언마운트
     setTimeout(() => {
       setRenderSidebar(false)
     }, 300)
   }
 
-  // 6) 검색 핸들러(폼 제출 시)
+  // 검색 핸들러 (실제 로직은 filtered 객체로 처리)
   const handleSearch = e => {
     e.preventDefault()
-    // 실제 로직은 필터링에서 처리하므로 여기서는 아무것도 하지 않습니다.
   }
 
-  // 7) 검색어/범위에 따라 필터된 결과 생성
+  // 검색어/범위에 따른 필터링 결과
   const filtered = {}
   categories.forEach(cat => {
-    // 검색어가 비어 있을 때
     if (searchQuery.trim() === "") {
       filtered[cat] = categorized[cat]
     } else {
-      // "전체" 일 때: 모든 카테고리에서 검색어 포함 글만
       if (searchScope === "전체") {
         filtered[cat] = categorized[cat].filter(post =>
-          (post.frontmatter.title + " " + post.excerpt)
+          (
+            post.frontmatter.title +
+            " " +
+            post.excerpt
+          )
             .toLowerCase()
             .includes(searchQuery.toLowerCase())
         )
       } else {
-        // 특정 카테고리 선택 시: 해당 카테고리 내에서만 검색
         if (cat === searchScope) {
           filtered[cat] = categorized[cat].filter(post =>
-            (post.frontmatter.title + " " + post.excerpt)
+            (
+              post.frontmatter.title +
+              " " +
+              post.excerpt
+            )
               .toLowerCase()
               .includes(searchQuery.toLowerCase())
           )
@@ -102,11 +104,11 @@ export default function Home({ data }) {
 
   return (
     <Layout>
-      {/* =========================== */}
-      {/* 1) 최상단바 (흰색 배경) */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 1) 최상단바 (흰색 배경, 고정) */}
       <header className="site-header">
         <div className="container">
-          {/* 햄버거 아이콘 */}
+          {/* 왼쪽: 햄버거 아이콘 */}
           <div className="header-left">
             <button
               className="hamburger-btn"
@@ -121,7 +123,7 @@ export default function Home({ data }) {
             </button>
           </div>
 
-          {/* 로고 (가운데) */}
+          {/* 가운데: 로고 */}
           <div className="header-center">
             <Link to="/">
               <img
@@ -132,7 +134,7 @@ export default function Home({ data }) {
             </Link>
           </div>
 
-          {/* 로그인 아이콘 */}
+          {/* 오른쪽: 로그인 버튼 */}
           <div className="header-right">
             <Link to="/login" className="login-btn" aria-label="로그인">
               <img
@@ -145,8 +147,8 @@ export default function Home({ data }) {
         </div>
       </header>
 
-      {/* =========================== */}
-      {/* 2) 서브바 (초록색 배경) */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 2) 서브바 (초록색 배경, 헤더 바로 아래 고정) */}
       <div className="sub-header">
         <div className="container">
           <form className="search-form" onSubmit={handleSearch}>
@@ -176,8 +178,8 @@ export default function Home({ data }) {
         </div>
       </div>
 
-      {/* =========================== */}
-      {/* 3) 사이드바 (애니메이션) */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 3) 사이드바 (슬라이드 애니메이션) */}
       {renderSidebar && (
         <div
           className={`sidebar-overlay ${
@@ -226,11 +228,11 @@ export default function Home({ data }) {
         </div>
       )}
 
-      {/* =========================== */}
-      {/* 4) 메인 콘텐츠: 모든 카테고리 섹션 (Centralized Container) */}
+      {/* ──────────────────────────────────────────────────────────── */}
+      {/* 4) 메인 콘텐츠: 헤더+서브바 아래에 시작하도록 여백 조정 */}
       <main className="main-content">
         <div className="container">
-          {categories.map((category, catIndex) => (
+          {categories.map((category) => (
             <section
               id={category}
               key={category}
@@ -243,7 +245,7 @@ export default function Home({ data }) {
                     key={post.id}
                     className="news-card"
                     style={{
-                      animationDelay: `${0.05 * idx}s`, // 글마다 약간씩 delay
+                      animationDelay: `${0.05 * idx}s`,
                     }}
                   >
                     <div className="card-content">
@@ -267,7 +269,7 @@ export default function Home({ data }) {
         </div>
       </main>
 
-      {/* =========================== */}
+      {/* ──────────────────────────────────────────────────────────── */}
       {/* 5) 하단바 (Footer) */}
       <footer className="site-footer">
         <div className="container footer-content">
