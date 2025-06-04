@@ -31,61 +31,35 @@
       width: 100%;
       height: auto;
     }
-    .side-menu {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 1000;
-      top: 0;
-      left: 0;
-      background-color: #fff;
-      overflow-x: hidden;
-      transition: 0.3s;
-      padding-top: 60px;
-      border-right: 1px solid #ccc;
-    }
-    .side-menu a {
-      padding: 8px 32px;
-      text-decoration: none;
-      font-size: 18px;
-      color: #111;
-      display: block;
-      transition: 0.3s;
-    }
-    .side-menu a:hover {
-      background-color: #f1f1f1;
-    }
-    .side-menu .closebtn {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 30px;
-      cursor: pointer;
-    }
-    .menu-icon {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      width: 32px;
-      height: 32px;
-      cursor: pointer;
-    }
-    nav {
+    .menu-bar {
       background-color: var(--primary-color);
-      overflow-x: auto;
-      white-space: nowrap;
       display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
       padding: 0.75rem 1rem;
-      justify-content: center;
     }
-    nav a {
+    .menu-bar nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .menu-bar a {
       color: white;
-      margin: 0 1rem;
+      margin: 0 0.5rem;
       text-decoration: none;
       font-weight: 600;
     }
-    nav a:hover {
+    .menu-bar a:hover {
       text-decoration: underline;
+    }
+    .search-form {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .search-form input[type="text"] {
+      padding: 0.25rem;
     }
     main {
       padding: 2rem;
@@ -112,93 +86,100 @@
       color: #666;
       margin-bottom: 1rem;
     }
+    .support-link {
+      text-align: center;
+      padding: 2rem;
+      background: #e9f5f1;
+    }
   </style>
 </head>
 <body>
   <header>
-    <img src="/static/uploads/hamburger.svg" alt="menu" class="menu-icon" onclick="openMenu()" />
     <a href="index.html">
       <img src="/static/uploads/logo.svg" alt="logo" class="logo" />
     </a>
   </header>
 
-  <div id="sideMenu" class="side-menu">
-    <span class="closebtn" onclick="closeMenu()">&times;</span>
-    <a href="#politics">정치</a>
-    <a href="#society">사회</a>
-    <a href="#life">민생</a>
-    <a href="#culture">문화</a>
-    <a href="#opinion">칼럼</a>
-    <a href="#notice">공지사항</a>
-    <a href="#report">제보하기</a>
+  <div class="menu-bar">
+    <nav>
+      <a href="#politics">정치</a>
+      <a href="#society">사회</a>
+      <a href="#life">민생</a>
+      <a href="#culture">문화</a>
+      <a href="#opinion">칼럼</a>
+      <a href="#notice">공지사항</a>
+      <a href="#report">제보하기</a>
+      <a href="#support">후원·구독하기</a>
+    </nav>
+    <form class="search-form" onsubmit="event.preventDefault(); performSearch();">
+      <select id="search-scope">
+        <option value="all">전체</option>
+        <option value="정치">정치</option>
+        <option value="사회">사회</option>
+        <option value="민생">민생</option>
+        <option value="문화">문화</option>
+        <option value="칼럼">칼럼</option>
+        <option value="공지사항">공지사항</option>
+        <option value="제보하기">제보하기</option>
+      </select>
+      <input type="text" id="search-query" placeholder="검색어 입력" />
+      <button type="submit">검색</button>
+    </form>
   </div>
-
-  <nav>
-    <a href="#politics">정치</a>
-    <a href="#society">사회</a>
-    <a href="#life">민생</a>
-    <a href="#culture">문화</a>
-  </nav>
 
   <main>
     <section id="politics">
       <h2>정치</h2>
       <div class="news-list" data-category="정치">불러오는 중...</div>
     </section>
-
     <section id="society">
       <h2>사회</h2>
       <div class="news-list" data-category="사회">불러오는 중...</div>
     </section>
-
     <section id="life">
       <h2>민생</h2>
       <div class="news-list" data-category="민생">불러오는 중...</div>
     </section>
-
     <section id="culture">
       <h2>문화</h2>
       <div class="news-list" data-category="문화">불러오는 중...</div>
     </section>
-
     <section id="opinion">
       <h2>칼럼</h2>
       <div class="news-list" data-category="칼럼">불러오는 중...</div>
     </section>
-
     <section id="notice">
       <h2>공지사항</h2>
       <div class="news-list" data-category="공지사항">불러오는 중...</div>
     </section>
-
     <section id="report">
       <h2>제보하기</h2>
       <div class="news-list" data-category="제보하기">불러오는 중...</div>
     </section>
+    <section id="support">
+      <h2>후원·구독하기</h2>
+      <p class="support-link">정기후원과 뉴스레터 구독으로 거리로를 응원해 주세요.</p>
+    </section>
   </main>
 
   <script>
-    function openMenu() {
-      document.getElementById("sideMenu").style.width = "250px";
-    }
-    function closeMenu() {
-      document.getElementById("sideMenu").style.width = "0";
-    }
+    const postList = [
+      "/content/news/2025-06-04-example.md"
+    ];
+
+    const allPosts = [];
 
     async function loadPosts() {
-      const res = await fetch("/content/news/index.json");
-      const postList = await res.json();
-
       for (const url of postList) {
         try {
           const res = await fetch(url);
           const text = await res.text();
-          const metaMatch = text.match(/---([\\s\\S]*?)---/);
-          const content = text.replace(/---([\\s\\S]*?)---/, "").trim();
+          const metaMatch = text.match(/---([\s\S]*?)---/);
+          const content = text.replace(/---([\s\S]*?)---/, "").trim();
           const metadata = {};
 
           if (metaMatch) {
-            metaMatch[1].trim().split("\\n").forEach(line => {
+            metaMatch[1].trim().split("\n").forEach(line => {
               const [key, ...rest] = line.split(":");
               metadata[key.trim()] = rest.join(":").trim();
             });
@@ -212,10 +193,15 @@
             <div class="post-body">${html}</div>
           `;
 
-          const target = document.querySelector(`[data-category="\${metadata.category}"]`);
+          article.dataset.category = metadata.category;
+          article.dataset.title = metadata.title;
+
+          allPosts.push(article);
+
+          const target = document.querySelector(`[data-category="${metadata.category}"]`);
           if (target) {
             if (target.innerHTML.includes("불러오는 중")) target.innerHTML = "";
-            target.appendChild(article);
+            target.appendChild(article.cloneNode(true));
           }
         } catch (e) {
           console.error("불러오기 실패:", url, e);
@@ -223,7 +209,27 @@
       }
     }
 
+    function performSearch() {
+      const keyword = document.getElementById("search-query").value.trim();
+      const scope = document.getElementById("search-scope").value;
+
+      document.querySelectorAll(".news-list").forEach(div => div.innerHTML = "");
+
+      allPosts.forEach(post => {
+        const title = post.dataset.title || "";
+        const category = post.dataset.category || "";
+
+        if ((scope === "all" || category === scope) && title.includes(keyword)) {
+          const target = document.querySelector(`[data-category="${category}"]`);
+          if (target) target.appendChild(post.cloneNode(true));
+        }
+      });
+    }
+
     loadPosts();
+  </script>
+</body>
+</html>
   </script>
 </body>
 </html>
