@@ -82,7 +82,7 @@ export default function Home({ data }) {
         <div className="header-right">
           <Link to="/login" className="login-btn" aria-label="로그인">
             <img
-              src="/uploads/login-icon.svg"
+              src="/uploads/loginicon.svg"
               alt="로그인"
               className="login-icon"
             />
