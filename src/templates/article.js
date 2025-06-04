@@ -2,7 +2,6 @@
 import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/Layout"
-import "../styles/article.css" // 필요하다면 별도 CSS 추가
 
 export default function ArticleTemplate({ data }) {
   const post = data.markdownRemark
